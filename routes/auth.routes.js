@@ -2,6 +2,7 @@ const User = require('../models/User.model')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { isAuthenticated } = require('../middlewares/route-guard.middleware')
+const secret = require('../config/secretGenerator')
 
 const router = require('express').Router()
 // All routes starts with /auth
@@ -33,7 +34,7 @@ router.post('/login', async (req, res, next) => {
       // User does exists with this username
       if (bcrypt.compareSync(password, potentialUser.passwordHash)) {
         // User has correct credentials
-        const token = jwt.sign({ userId: potentialUser._id }, process.env.TOKEN_SECRET, {
+        const token = jwt.sign({ userId: potentialUser._id }, secret, {
           algorithm: 'HS256',
           expiresIn: '6h',
         })

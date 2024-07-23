@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
+const secret = require('../config/secretGenerator')
 
 const isAuthenticated = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1] // get the token from headers "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk4Y2Q3ZDFjNDc3YjMwNzE2OGM0YTMiLCJpYXQiOjE3MjEyOTMxNjB9.0u-Xwq483aEjrj9D2RUsDUZuqMTsOWFKeP_KZRW93Uw"
-    const payload = jwt.verify(token, process.env.TOKEN_SECRET) // decode token and get payload
+    const payload = jwt.verify(token, secret) // decode token and get payload
 
     req.tokenPayload = payload // to pass the decoded payload to the next route
     next()
